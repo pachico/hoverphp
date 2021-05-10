@@ -101,6 +101,35 @@ class MyAwesomeIntegrationTest extends TestCase
 }
 ```
 
+### Exporting simulations
+
+This is an example that shows how to export simulations
+
+```php
+// This is a working example. Start hoverfly with docker-compose by typing `make up` in root folder
+
+// Let's create our client and point it to Hoverfly's location
+$hClient = Client::new('http://localhost:8888');
+
+// Enable capture mode
+$hClient->setMode(Client::MODE_CAPTURE);
+
+// Set the simulation in hoverfly
+$hClient->setSimulation(
+    H\Simulation::new()->withPair(
+        H\Request::new()->withDestinationMatcher(Matcher::GLOB, '*'),
+        H\Response::new(200, 'My awesome result')
+    )
+);
+
+// Export it to JSON string
+$jsonSimulation = $hClient->exportSimulation();
+
+// Export JSON string to file
+$hClient->exportSimulationToFile('/tmp/simulation.json', true);
+```
+
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) and [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) for details.

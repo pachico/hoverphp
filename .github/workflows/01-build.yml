@@ -1,5 +1,5 @@
-# Integration test GitHub Action for HoverPHP
-name: HoverPHP integration tests
+# HoverPHP build pipeline
+name: HoverPHP build pipeline
 on: [push, pull_request]
 
 jobs:

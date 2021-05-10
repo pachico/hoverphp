@@ -4,7 +4,6 @@ use GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use GuzzleHttp\Psr7\Response as Psr7Response;
 use Pachico\HoverPHP\Client;
-use Pachico\HoverPHP\Entity\Pair;
 use Pachico\HoverPHP\Entity\Request;
 use Pachico\HoverPHP\Entity\Response;
 use Pachico\HoverPHP\Entity\Simulation;
