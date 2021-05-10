@@ -11,6 +11,7 @@ use InvalidArgumentException;
 use Pachico\HoverPHP\Entity\Simulation;
 use Pachico\HoverPHP\Exception\CannotConnectToHoverfly;
 use Pachico\HoverPHP\Exception\CannotExportSimulation;
+use Throwable;
 
 /**
  * @todo: manage exceptions
@@ -42,11 +43,42 @@ class Client
             ]);
     }
 
+    /**
+     * Returns a Hoverfly client by specifying its connection (host:port).
+     * Additionally, a Guzzle client can be passed
+     */
     public static function new(string $hoverflyDSN, ClientInterface $httpClient = null): self
     {
         return new self($hoverflyDSN, $httpClient);
     }
 
+    /**
+     * Test connectivity with Hoverfly.
+     * If successful, returns (string) "pong"
+     */
+    public function ping(): string
+    {
+        try {
+            $this->httpClient->request(
+                'GET',
+                'state',
+                [
+                    'headers' => ['Content-Type' => 'application-json'],
+                ]
+            );
+
+            return 'pong';
+        } catch (ConnectException $exception) {
+            throw new CannotConnectToHoverfly('Could not connect to hoverfly. ' . $exception->getMessage());
+        } catch (Throwable $th) {
+            throw $th;
+        }
+    }
+
+    /**
+     * Sets Hoverfly's mode
+     * @see https://docs.hoverfly.io/en/latest/pages/keyconcepts/modes/modify.html
+     */
     public function setMode(string $mode): void
     {
         if (false === in_array($mode, self::$allowedModes)) {
@@ -67,11 +99,15 @@ class Client
             );
         } catch (ConnectException $exception) {
             throw new CannotConnectToHoverfly('Could not connect to hoverfly. ' . $exception->getMessage());
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
     }
 
+    /**
+     * Sets an entire simulation set
+     * @see https://docs.hoverfly.io/en/latest/pages/keyconcepts/simulations/simulations.html
+     */
     public function setSimulation(Simulation $simulation): void
     {
         try {
@@ -85,22 +121,30 @@ class Client
             );
         } catch (ConnectException $exception) {
             throw new CannotConnectToHoverfly('Could not connect to hoverfly. ' . $exception->getMessage());
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
     }
 
+    /**
+     * Deletes the entire simulation set
+     * @see https://docs.hoverfly.io/en/latest/pages/keyconcepts/simulations/simulations.html
+     */
     public function deleteSimulation(): void
     {
         try {
             $this->httpClient->request('DELETE', 'simulation');
         } catch (ConnectException $exception) {
             throw new CannotConnectToHoverfly('Could not connect to hoverfly. ' . $exception->getMessage());
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
     }
 
+    /**
+     * Exports the entire simulation set as JSON string
+     * @see https://docs.hoverfly.io/en/latest/pages/keyconcepts/simulations/simulations.html
+     */
     public function exportSimulation(): string
     {
         try {
@@ -114,11 +158,15 @@ class Client
             return $response->getBody()->getContents();
         } catch (ConnectException $exception) {
             throw new CannotConnectToHoverfly('Could not connect to hoverfly. ' . $exception->getMessage());
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
     }
 
+    /**
+     * Exports the entire simulation set as JSON string to a file
+     * @see https://docs.hoverfly.io/en/latest/pages/keyconcepts/simulations/simulations.html
+     */
     public function exportSimulationToFile(string $destinationPath, $overwrite = false): void
     {
         if (file_exists($destinationPath) && false === $overwrite) {
