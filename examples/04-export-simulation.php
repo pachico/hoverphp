@@ -24,6 +24,3 @@ $hClient->setSimulation(
 
 // Export it to JSON string
 $jsonSimulation = $hClient->exportSimulation();
-
-// Export JSON string to file
-$hClient->exportSimulationToFile('/tmp/simulation.json', true);

@@ -10,7 +10,7 @@ use GuzzleHttp\Exception\ConnectException;
 use InvalidArgumentException;
 use Pachico\HoverPHP\Entity\Simulation;
 use Pachico\HoverPHP\Exception\CannotConnectToHoverfly;
-use Pachico\HoverPHP\Exception\CannotExportSimulation;
+use Pachico\HoverPHP\Exception\Runtime;
 use Throwable;
 
 /**
@@ -71,7 +71,7 @@ class Client
         } catch (ConnectException $exception) {
             throw new CannotConnectToHoverfly('Could not connect to hoverfly. ' . $exception->getMessage());
         } catch (Throwable $th) {
-            throw $th;
+            throw new Runtime(sprintf('An error occurred: %s', $th->getMessage()));
         }
     }
 
@@ -100,7 +100,7 @@ class Client
         } catch (ConnectException $exception) {
             throw new CannotConnectToHoverfly('Could not connect to hoverfly. ' . $exception->getMessage());
         } catch (Throwable $th) {
-            throw $th;
+            throw new Runtime(sprintf('An error occurred: %s', $th->getMessage()));
         }
     }
 
@@ -122,7 +122,7 @@ class Client
         } catch (ConnectException $exception) {
             throw new CannotConnectToHoverfly('Could not connect to hoverfly. ' . $exception->getMessage());
         } catch (Throwable $th) {
-            throw $th;
+            throw new Runtime(sprintf('An error occurred: %s', $th->getMessage()));
         }
     }
 
@@ -137,7 +137,7 @@ class Client
         } catch (ConnectException $exception) {
             throw new CannotConnectToHoverfly('Could not connect to hoverfly. ' . $exception->getMessage());
         } catch (Throwable $th) {
-            throw $th;
+            throw new Runtime(sprintf('An error occurred: %s', $th->getMessage()));
         }
     }
 
@@ -159,32 +159,7 @@ class Client
         } catch (ConnectException $exception) {
             throw new CannotConnectToHoverfly('Could not connect to hoverfly. ' . $exception->getMessage());
         } catch (Throwable $th) {
-            throw $th;
+            throw new Runtime(sprintf('An error occurred: %s', $th->getMessage()));
         }
-    }
-
-    /**
-     * Exports the entire simulation set as JSON string to a file
-     * @see https://docs.hoverfly.io/en/latest/pages/keyconcepts/simulations/simulations.html
-     */
-    public function exportSimulationToFile(string $destinationPath, $overwrite = false): void
-    {
-        if (file_exists($destinationPath) && false === $overwrite) {
-            throw new CannotExportSimulation(
-                sprintf('Cannot export simulation since destination already exists. Got: %s', $destinationPath)
-            );
-        }
-
-        $destinationDir = dirname($destinationPath);
-        if (!is_dir($destinationDir) || !is_writable($destinationDir)) {
-            throw new CannotExportSimulation(
-                sprintf(
-                    'Cannot export simulation since destination folder does not exist or is not writable. Got: %s',
-                    $destinationDir
-                )
-            );
-        }
-
-        file_put_contents($destinationPath, $this->exportSimulation(), LOCK_EX);
     }
 }
