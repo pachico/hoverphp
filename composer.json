@@ -40,8 +40,12 @@
         }
     },
     "scripts": {
-        "unit": "phpunit -c phpunit.xml",
+        "unit": "phpunit -c phpunit-unit.xml",
         "integration": "phpunit -c phpunit-integration.xml",
+        "test": [
+            "composer unit",
+            "composer integration"
+        ],
         "sniff": "phpcs src",
         "format": "phpcbf src tests examples",
         "rector": "rector process src tests",

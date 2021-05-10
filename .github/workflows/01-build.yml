@@ -6,18 +6,6 @@ jobs:
   run:
     runs-on: ubuntu-latest
 
-    # services:
-    #   hoverfly:
-    #     image: spectolabs/hoverfly:v1.3.2
-    #     ports:
-    #       - 8500:8500
-    #       - 8888:8888
-    #     options: >-
-    #       --health-cmd "apk -q add curl && curl --silent --show-error --fail --output /dev/null http://localhost:8888"
-    #       --health-interval 10s
-    #       --health-timeout 5s
-    #       --health-retries 5
-
     strategy:
       matrix:
         php-versions: ["7.4", "8.0"]

@@ -2,51 +2,20 @@
 
 declare(strict_types=1);
 
-namespace HoverPHPITest;
+namespace Pachico\HoverPHPITest\SettingSimulation;
 
-use GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use GuzzleHttp\Psr7\Response as Psr7Response;
+use Pachico\HoverPHPITest\AbstractTestCase;
 use Pachico\HoverPHP\Client;
 use Pachico\HoverPHP\Entity\Matcher;
 use Pachico\HoverPHP\Entity\Request;
 use Pachico\HoverPHP\Entity\Response;
 use Pachico\HoverPHP\Entity\Simulation;
-use PHPUnit\Framework\TestCase;
 
-class ClientTest extends TestCase
+class ClientTest extends AbstractTestCase
 {
-
-    private Client $hClient;
-    private GuzzleHttpClient $httpClient;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $hoverflyDSN = sprintf('http://%s:%s', getenv('HOVER_PHP_HOVERFLY_HOST'), getenv('HOVER_PHP_HOVERFLY_PORT'));
-        $this->hClient = Client::new($hoverflyDSN);
-        $this->httpClient = new GuzzleHttpClient([
-            'base_uri' => $hoverflyDSN,
-            'http_errors' => false
-        ]);
-    }
-
-    public function tearDown(): void
-    {
-        //$this->hClient->deleteSimulation();
-    }
-
-    public function _testSettingModeSetsState()
-    {
-        // Arrange
-        // Act
-        $this->hClient->setMode(Client::MODE_SIMULATION);
-        $currentStateResponse = $this->httpClient->request('GET', '/api/v2/hoverfly/mode');
-        // Assert
-        $this->assertSame('simulate', json_decode($currentStateResponse->getBody()->getContents(), true)['mode']);
-    }
-
-    public function _testSetSimulationSetsItCorrectly()
+    public function testSetSimulationSetsItCorrectly()
     {
         // Arrange
         $simulation  = Simulation::new()->withPair(
@@ -55,7 +24,7 @@ class ClientTest extends TestCase
         );
 
         // Act
-        $this->hClient->deleteSimulation(Client::MODE_SIMULATION);
+        $this->hClient->setMode(Client::MODE_SIMULATION);
 
         try {
             $this->hClient->setSimulation($simulation);
@@ -82,7 +51,7 @@ class ClientTest extends TestCase
         );
 
         // Act
-        $this->hClient->deleteSimulation(Client::MODE_SIMULATION);
+        $this->hClient->setMode(Client::MODE_SIMULATION);
 
         $this->hClient->setSimulation($simulation);
         $response = $this->httpClient->send($psr7Request, ['proxy' => 'localhost:8500']);

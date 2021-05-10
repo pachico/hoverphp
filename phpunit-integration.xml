@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="vendor/autoload.php" backupGlobals="false" backupStaticAttributes="false" colors="true" verbose="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="false">
     <testsuites>
-        <testsuite name="pachico Test Suite">
+        <testsuite name="HoverPHP Integration Test Suite">
             <directory>tests/integration</directory>
         </testsuite>
     </testsuites>
@@ -11,10 +11,10 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="junit" target="build/report.junit.xml" />
-        <log type="coverage-html" target="build/coverage" />
-        <log type="coverage-text" target="build/coverage.txt" />
-        <log type="coverage-clover" target="build/logs/clover.xml" />
+        <log type="junit" target="build/integration/report.junit.xml" />
+        <log type="coverage-html" target="build/coverage/integration" />
+        <log type="coverage-text" target="build/coverage/integration/coverage.txt" />
+        <log type="coverage-clover" target="build/coverage/integration/logs/clover.xml" />
     </logging>
     <php>
         <const name="SIMULATION_SCHEMA_PATH" value="resources/hoverfly/schema/simulation.json" />
