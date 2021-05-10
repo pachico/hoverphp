@@ -1,0 +1,67 @@
+# Integration test GitHub Action for HoverPHP
+name: HoverPHP integration tests
+on: [push, pull_request]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    # services:
+    #   hoverfly:
+    #     image: spectolabs/hoverfly:v1.3.2
+    #     ports:
+    #       - 8500:8500
+    #       - 8888:8888
+    #     options: >-
+    #       --health-cmd "apk -q add curl && curl --silent --show-error --fail --output /dev/null http://localhost:8888"
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
+
+    strategy:
+      matrix:
+        php-versions: ["7.4", "8.0"]
+    name: PHP ${{ matrix.php-versions }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+        env:
+          runner: ubuntu-latest # Specify the runner.
+
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          coverage: xdebug
+          tools: composer:v2
+
+      - name: Update and install Composer dependencies
+        run: composer update --no-progress ${{ matrix.composer-flags }}
+
+      - name: Run PHPUnit unit tests
+        run: composer unit
+
+      - name: Install Hoverfly
+        uses: agilepathway/hoverfly-github-action@main
+        with:
+          runner_github_workspace_path: ${{ github.workspace }}
+
+      - name: Start Hoverfly
+        run: hoverctl start
+
+      - name: Run PHPUnit integration tests
+        run: composer integration
+        env:
+          HOVER_PHP_HOVERFLY_HOST: localhost
+          HOVER_PHP_HOVERFLY_PORT: 8888
+
+      - name: Run Rector
+        run: composer rector
+
+      - name: Run Psalm
+        run: composer psalm

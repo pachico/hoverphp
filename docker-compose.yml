@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  hoverfly:
+    image: spectolabs/hoverfly:v1.3.2
+    ports:
+      - 8888:8888
+      - 8500:8500
