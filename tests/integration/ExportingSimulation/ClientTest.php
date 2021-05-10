@@ -27,7 +27,6 @@ class ClientTest extends AbstractTestCase
             'proxy' => 'localhost:8500',
             'headers' => ['Content-Type' => 'application/json']
         ]);
-
         // Act
 
         $output = $this->hClient->exportSimulation();

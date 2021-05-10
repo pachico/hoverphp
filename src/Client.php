@@ -63,7 +63,7 @@ class Client
                 'GET',
                 'state',
                 [
-                    'headers' => ['Content-Type' => 'application-json'],
+                    'headers' => ['Content-Type' => 'application/json'],
                 ]
             );
 
@@ -93,8 +93,8 @@ class Client
                 'PUT',
                 'hoverfly/mode',
                 [
-                    'headers' => ['Content-Type' => 'application-json'],
-                    'json' => $body
+                    'headers' => ['Content-Type' => 'application/json'],
+                    'body' => json_encode($body, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE)
                 ]
             );
         } catch (ConnectException $exception) {
@@ -115,8 +115,8 @@ class Client
                 'POST',
                 'simulation',
                 [
-                    'headers' => ['Content-Type' => 'application-json'],
-                    'json' => $simulation
+                    'headers' => ['Content-Type' => 'application/json'],
+                    'body' => json_encode($simulation, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE)
                 ]
             );
         } catch (ConnectException $exception) {
