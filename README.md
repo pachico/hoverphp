@@ -4,7 +4,7 @@
 [![Source Code](https://img.shields.io/badge/source-pachico/hoverphp-blue.svg)](https://github.com/pachico/hoverphp)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/pachico/hoverphp/blob/main/LICENSE.md)
 [![ci](https://github.com/pachico/hoverphp/actions/workflows/01-build.yml/badge.svg)](https://github.com/pachico/hoverphp/actions)
-![php 7.4+](https://img.shields.io/badge/php-min%207.4-red.svg)
+![php min/max+](https://img.shields.io/badge/php-min%3A7.4%20%7C%20max%3A8.0-green)
 
 Small PHP library to interact with [Hoverfly](https://hoverfly.io/).
 
@@ -124,11 +124,7 @@ $hClient->setSimulation(
 
 // Export it to JSON string
 $jsonSimulation = $hClient->exportSimulation();
-
-// Export JSON string to file
-$hClient->exportSimulationToFile('/tmp/simulation.json', true);
 ```
-
 
 ## Contributing
 
