@@ -131,7 +131,7 @@ class SimulationTest extends AbstractTestCase
         $sut->withPair(Request::new(), Response::new(200, 'body and mind'));
         // Assert
         $this->assertJsonStringEqualsJsonString(
-            '{"data":{"pairs":[{"request":{"method":[],"scheme":[],"destination":[],"path":[],"body":[]},"response":{"status":200,"body":"body and mind","encodedBody":false,"headers":[],"templated":false}}]},"meta":{"schemaVersion":"v5"}}',
+            '{"data":{"pairs":[{"request":{"method":[],"scheme":[],"destination":[],"path":[],"body":[]},"response":{"status":200,"body":"body and mind","encodedBody":false,"headers":{},"templated":false}}]},"meta":{"schemaVersion":"v5"}}',
             json_encode($sut)
         );
     }

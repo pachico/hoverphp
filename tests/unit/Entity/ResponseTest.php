@@ -17,7 +17,7 @@ class ResponseTest extends AbstractTestCase
         // Assert
         $this->assertInstanceOf(Response::class, $sut);
         $this->assertJsonStringEqualsJsonString(
-            '{"status":502,"body":"{\"nice\":\"body\"","encodedBody":false,"headers":[],"templated":false}',
+            '{"status":502,"body":"{\"nice\":\"body\"","encodedBody":false,"headers":{},"templated":false}',
             json_encode($sut)
         );
     }

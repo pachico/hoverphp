@@ -7,6 +7,7 @@ namespace Pachico\HoverPHP\Entity;
 use JsonSerializable;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
+use stdClass;
 
 class Response implements JsonSerializable
 {
@@ -61,7 +62,7 @@ class Response implements JsonSerializable
             'status' => $this->status,
             'body' => $this->body,
             'encodedBody' => $this->isBodyEncoded,
-            'headers' => $this->headers,
+            'headers' => empty($this->headers) ? new stdClass : $this->headers,
             'templated' => $this->isTemplated
         ];
     }
