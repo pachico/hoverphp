@@ -82,7 +82,7 @@ class RequestTest extends AbstractTestCase
                     ->withHeaderMatcher('bar', Matcher::GLOB, 'foo')
                     ->withMethodMatcher(Matcher::GLOB, 'foo'),
                 '{"method":[{"value":"foo","matcher":"glob"},{"value":"foo","matcher":"glob"}],"scheme":[{"value":"foo","matcher":"glob"}],"destination":[{"value":"foo","matcher":"glob"}],"path":[{"value":"foo","matcher":"glob"}],"query":{"bar":[{"value":"foo","matcher":"glob"}]},"headers":{"bar":[{"value":"foo","matcher":"glob"}]},"body":[{"value":"foo","matcher":"glob"}]}'
-            ]
+            ],
         ];
     }
 
